@@ -23,12 +23,25 @@
 
         @PostMapping
         public Task addTask(@RequestBody Task task) {
+            if (task.getPriority() == null || task.getPriority().isEmpty()) {
+                task.setPriority("MEDIUM"); // Default to MEDIUM if priority is not provided
+            }
             long nextid = tasks.size()+1;
             task.setId(nextid);
-
             tasks.add(task);
             return task;
         }
+
+
+
+        //        Sorted by priority
+        @GetMapping("/sorted-by-priority")
+        public List<Task> getTasksSortedByPriority() {
+            return tasks.stream()
+                    .sorted((t1, t2) -> t1.getPriority().compareToIgnoreCase(t2.getPriority()))
+                    .toList();
+        }
+
         // Update a task by ID
         @PutMapping("/{id}")
         public Task updateTask(@PathVariable long id, @RequestBody Task updatedTask) {
@@ -38,12 +51,14 @@
                     // Update the found task with the new data from updatedTask
                     tasks.get(i).setDescription(updatedTask.getDescription());
                     tasks.get(i).setCompleted(updatedTask.isCompleted());
+                    tasks.get(i).setPriority(updatedTask.getPriority());
                     return tasks.get(i);
                 }
             }
             // If no task was found with the given ID, throw an exception
             throw new RuntimeException("Task not found");
         }
+
 
 
         // Delete a task by ID

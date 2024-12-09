@@ -4,14 +4,16 @@ public class Task {
     private long id;
     private String description;
     private boolean completed;
+    private String priority;
 
     // Constructors
     public Task() {}
 
-    public Task(long id, String description, boolean completed) {
+    public Task(long id, String description, boolean completed,String priority) {
         this.id = id;
         this.description = description;
         this.completed = completed;
+        this.priority = priority;
     }
 
     // Getters and Setters
@@ -37,5 +39,11 @@ public class Task {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+    public String getPriority(){
+        return priority;
+    }
+    public void setPriority(String priority){
+        this.priority = priority;
     }
 }
