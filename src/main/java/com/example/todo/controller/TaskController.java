@@ -37,10 +37,16 @@
         //        Sorted by priority
         @GetMapping("/sorted-by-priority")
         public List<Task> getTasksSortedByPriority() {
+            List<String> priorityOrder = List.of("HIGH", "MEDIUM", "LOW");
             return tasks.stream()
-                    .sorted((t1, t2) -> t1.getPriority().compareToIgnoreCase(t2.getPriority()))
+                    .sorted((t1, t2) -> {
+                        int p1 = priorityOrder.indexOf(t1.getPriority().toUpperCase());
+                        int p2 = priorityOrder.indexOf(t2.getPriority().toUpperCase());
+                        return Integer.compare(p1, p2);
+                    })
                     .toList();
         }
+
 
         // Update a task by ID
         @PutMapping("/{id}")
